@@ -30,6 +30,11 @@ const App: React.FC = () => {
                     </div>
                 )}
             </header>
+            <a href="https://discord.com/api/oauth2/authorize?client_id=1127156751255478385&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fdiscord&response_type=tokencode&scope=identify">
+                <button>
+                    <span>Sign in with Discord</span>
+                </button>
+            </a>
             <div className="app"></div>
         </main>
     );
