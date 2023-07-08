@@ -81,20 +81,16 @@ export const sendXDCMsg = async (
         description: `Market cap: $${usd_market_cap.toLocaleString(
             undefined,
             opts
-        )}\nVolume: $${usd_24h_vol.toLocaleString(undefined, opts)}`,
+        )}\nVolume (24h): $${usd_24h_vol.toLocaleString(undefined, opts)}`,
+        color: usd_24h_change > 0 ? 0x00ff00 : 0xff0000,
+        image: {
+            url: "https://assets.coingecko.com/coins/images/2912/small/xdc-icon.png",
+        },
     };
 
     await user.send({
         embeds: [embed],
     });
-    // await user.send(
-    //     `XDC price is $${usd} (${usd_24h_change.toFixed(
-    //         2
-    //     )}%)\nMarket cap: $${usd_market_cap.toLocaleString(
-    //         undefined,
-    //         opts
-    //     )}\nVolume: $${usd_24h_vol.toLocaleString(undefined, opts)}`
-    // );
 };
 
 export const sendXRC20Msg = async (
@@ -107,14 +103,18 @@ export const sendXRC20Msg = async (
 ) => {
     const opts = { minimumFractionDigits: 0, maximumFractionDigits: 0 };
     const user = await client.users.fetch(userId);
-    await user.send(
-        `${symbol} ($) price is $${usd} (${usd_24h_change.toFixed(
-            2
-        )}%)\nMarket cap: $${usd_market_cap.toLocaleString(
+    const embed: APIEmbed = {
+        title: `${symbol} Price: $${usd} (${usd_24h_change.toFixed(2)}%)`,
+        description: `Market cap: $${usd_market_cap.toLocaleString(
             undefined,
             opts
-        )}\nVolume: $${usd_24h_vol.toLocaleString(undefined, opts)}`
-    );
+        )}\nVolume (24h): $${usd_24h_vol.toLocaleString(undefined, opts)}`,
+        color: usd_24h_change > 0 ? 0x00ff00 : 0xff0000,
+    };
+
+    await user.send({
+        embeds: [embed],
+    });
 };
 
 // Start TRPC server
