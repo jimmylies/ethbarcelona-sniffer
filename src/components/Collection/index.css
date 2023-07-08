@@ -1,3 +1,22 @@
 .Collection {
-  
+ display: flex;
+ flex-direction: column; 
+}
+
+.collection-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.collection-item {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.collection-item img {
+  width: 250px;
 }
