@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import { Web3ModalContext } from "../../contexts/Web3ModalProvider";
 import "./index.css";
 import { Link } from "react-router-dom";
+import logo_transparent from "../../assets/img/logo_transparent.png";
 
 const Header = () => {
   const { account, connect, disconnect } = React.useContext(Web3ModalContext);
@@ -20,7 +21,9 @@ const Header = () => {
   return (
     <div className="Header">
       <nav>
-        <Link to="/">Home</Link>
+        <Link to="/">
+          <img className="logo" src={logo_transparent} alt="logo" />
+        </Link>
       </nav>
       <div className="connection-container">
         <a href="https://discord.com/api/oauth2/authorize?client_id=1127156751255478385&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fdiscord&response_type=token&scope=identify">
@@ -29,11 +32,11 @@ const Header = () => {
           </button>
         </a>
         {!account ? (
-          <div className={"connect"} onClick={handleConnectWallet}>
-            CONNECT WALLET
+          <div className="connect" onClick={handleConnectWallet}>
+            Connect wallet
           </div>
         ) : (
-          <div className={"connect"} onClick={handleDisconnectWallet}>
+          <div className="connect" onClick={handleDisconnectWallet}>
             {ellipseAddress(account)}
           </div>
         )}
