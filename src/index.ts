@@ -1,18 +1,36 @@
-import { Client, GatewayIntentBits } from "discord.js";
+import {
+    ActionRowBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    Client,
+    GatewayIntentBits,
+    GuildMember,
+    ComponentType,
+    APIEmbed,
+} from "discord.js";
 import dotenv from "dotenv";
-import { LowSync } from "lowdb";
-import { JSONFileSync } from "lowdb/node";
 
-type Item = {
-    address: string;
-    secretKey: string;
-    discordId: string;
-    discordUsername: string;
+// import { LowSync } from "lowdb";
+// import { JSONFileSync } from "lowdb/node";
+
+// type Item = {
+// address: string;
+// secretKey: string;
+// discordId: string;
+//     // discordUsername: string;
+// };
+
+// const defaultData: Item[] = [];
+// const adapter = new JSONFileSync<Item[]>("db.json");
+// const db = new LowSync(adapter, defaultData);
+
+type NFT = {
+    name: string;
+    symbol: string;
+    tokenId: number;
+    price: number;
 };
 
-const defaultData: Item[] = [];
-const adapter = new JSONFileSync<Item[]>("db.json");
-const db = new LowSync(adapter, defaultData);
 dotenv.config();
 
 const client = new Client({
@@ -24,38 +42,39 @@ const client = new Client({
     ],
 });
 
-client.on("ready", () => {
+client.on("ready", async () => {
     console.log(`Logged in as ${client.user?.tag}!`);
+    sendMsg("941011407158263828", {
+        name: "test",
+        symbol: "TEST",
+        tokenId: 1234,
+        price: 6.67,
+    });
 });
 
-client.on("interactionCreate", async (interaction) => {
-    if (!interaction.isCommand()) return;
+const sendMsg = async (userId: string, co: NFT) => {
+    const user = await client.users.fetch(userId);
 
-    if (interaction.commandName === "get-started") {
-        const existingEntry = db.data.find(
-            (item) => item.discordId === interaction.user.id
-        );
-        if (existingEntry) {
-            await interaction.reply({
-                content: "Wallet already generated: " + existingEntry.secretKey,
-                ephemeral: true,
-            });
-            return;
-        }
+    const confirm = new ButtonBuilder()
+        .setLabel("Buy")
+        // .setURL("https://sniffer_ethbcn.netlify.app")
+        .setURL("https://google.com")
+        .setStyle(ButtonStyle.Link);
 
-        await interaction.reply({
-            content: "Here is your secret key: ",
-            ephemeral: true,
-        });
+    const reduction = 27;
+    const url =
+        "https://ipfs.io/ipfs/QmNiGCB6ChKCv9MhcZJEktiwxYGdrKaTPAXz9Xa3wiN6DL";
+    const embed: APIEmbed = {
+        title: `${co.symbol} #${co.tokenId}`,
+        description: `${reduction}% below floor price`,
+        image: { url },
+    };
 
-        db.data.push({
-            address: "account.address",
-            secretKey: "account.secretKey",
-            discordId: interaction.user.id,
-            discordUsername: interaction.user.username,
-        });
-        db.write();
-    }
-});
+    await user.send({
+        content: `Are you sure you want to buy ${co.name} for : ${co.price} XDC?`,
+        components: [{ components: [confirm], type: ComponentType.ActionRow }],
+        embeds: [embed],
+    });
+};
 
 client.login(process.env.DISCORD_TOKEN);
