@@ -1,0 +1,14 @@
+{
+  "name": "API",
+  "version": "1.0.0",
+  "main": "API.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node API.js"
+  },
+  "private": true,
+  "dependencies": {
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security"
+  }
+}
