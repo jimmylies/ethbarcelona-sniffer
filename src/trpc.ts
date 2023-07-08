@@ -19,7 +19,43 @@ export type Context = inferAsyncReturnType<typeof createContext>;
 
 export const t = initTRPC.context<Context>().create();
 
-export const appRouter = t.router({});
+export const appRouter = t.router({
+    addToWatchlist: t.procedure
+        .input(
+            z.object({
+                address: z.string(),
+                symbol: z.string(),
+                price: z.number(),
+                discordId: z.string(),
+            })
+        )
+        .mutation(({ input }) => {
+            return prisma.user.upsert({
+                where: {
+                    discordId: input.discordId,
+                },
+                create: {
+                    discordId: input.discordId,
+                    watchlist: {
+                        create: {
+                            address: input.address,
+                            symbol: input.symbol,
+                            below: input.price,
+                        },
+                    },
+                },
+                update: {
+                    watchlist: {
+                        create: {
+                            address: input.address,
+                            symbol: input.symbol,
+                            below: input.price,
+                        },
+                    },
+                },
+            });
+        }),
+});
 
 export const expressMiddleware = trpcExpress.createExpressMiddleware({
     router: appRouter,
