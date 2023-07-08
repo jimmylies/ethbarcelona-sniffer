@@ -23,38 +23,63 @@ export const appRouter = t.router({
     addToWatchlist: t.procedure
         .input(
             z.object({
-                address: z.string(),
-                symbol: z.string(),
-                price: z.number(),
                 discordId: z.string(),
+                xrc721Watchlist: z.array(
+                    z.object({
+                        address: z.string(),
+                        symbol: z.string(),
+                        price: z.number(),
+                    })
+                ),
+                xrc20Watchlist: z.array(
+                    z.object({
+                        address: z.string(),
+                        symbol: z.string(),
+                        price: z.number(),
+                    })
+                ),
+                xdcRegistered: z.boolean(),
             })
         )
         .mutation(({ input }) => {
+            const xrc721Watchlist = {
+                createMany: {
+                    data: input.xrc721Watchlist,
+                },
+            };
+            const xrc20Watchlist = {
+                createMany: {
+                    data: input.xrc20Watchlist,
+                },
+            };
             return prisma.user.upsert({
                 where: {
                     discordId: input.discordId,
                 },
                 create: {
                     discordId: input.discordId,
-                    watchlist: {
-                        create: {
-                            address: input.address,
-                            symbol: input.symbol,
-                            below: input.price,
-                        },
-                    },
+                    xrc721Watchlist,
+                    xrc20Watchlist,
+                    xdcRegistered: input.xdcRegistered,
                 },
                 update: {
-                    watchlist: {
-                        create: {
-                            address: input.address,
-                            symbol: input.symbol,
-                            below: input.price,
-                        },
-                    },
+                    xrc721Watchlist,
+                    xrc20Watchlist,
+                    xdcRegistered: input.xdcRegistered,
                 },
             });
         }),
+    getWatchlist: t.procedure.input(z.string()).query(({ input }) =>
+        prisma.user.findUnique({
+            where: {
+                discordId: input,
+            },
+            include: {
+                xrc721Watchlist: true,
+                xrc20Watchlist: true,
+            },
+        })
+    ),
 });
 
 export const expressMiddleware = trpcExpress.createExpressMiddleware({

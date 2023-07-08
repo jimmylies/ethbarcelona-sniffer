@@ -12,6 +12,7 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import { expressMiddleware } from "./trpc";
+import { cronjob } from "./crons";
 
 type NFT = {
     name: string;
@@ -41,7 +42,7 @@ client.on("ready", async () => {
     // });
 });
 
-const sendMsg = async (userId: string, co: NFT) => {
+export const sendMsg = async (userId: string, co: NFT) => {
     const user = await client.users.fetch(userId);
 
     const confirm = new ButtonBuilder()
@@ -66,6 +67,56 @@ const sendMsg = async (userId: string, co: NFT) => {
     });
 };
 
+export const sendXDCMsg = async (
+    userId: string,
+    usd: number,
+    usd_market_cap: number,
+    usd_24h_vol: number,
+    usd_24h_change: number
+) => {
+    const opts = { minimumFractionDigits: 0, maximumFractionDigits: 0 };
+    const user = await client.users.fetch(userId);
+    const embed: APIEmbed = {
+        title: `XDC Price: $${usd} (${usd_24h_change.toFixed(2)}%)`,
+        description: `Market cap: $${usd_market_cap.toLocaleString(
+            undefined,
+            opts
+        )}\nVolume: $${usd_24h_vol.toLocaleString(undefined, opts)}`,
+    };
+
+    await user.send({
+        embeds: [embed],
+    });
+    // await user.send(
+    //     `XDC price is $${usd} (${usd_24h_change.toFixed(
+    //         2
+    //     )}%)\nMarket cap: $${usd_market_cap.toLocaleString(
+    //         undefined,
+    //         opts
+    //     )}\nVolume: $${usd_24h_vol.toLocaleString(undefined, opts)}`
+    // );
+};
+
+export const sendXRC20Msg = async (
+    userId: string,
+    symbol: string,
+    usd: number,
+    usd_market_cap: number,
+    usd_24h_vol: number,
+    usd_24h_change: number
+) => {
+    const opts = { minimumFractionDigits: 0, maximumFractionDigits: 0 };
+    const user = await client.users.fetch(userId);
+    await user.send(
+        `${symbol} ($) price is $${usd} (${usd_24h_change.toFixed(
+            2
+        )}%)\nMarket cap: $${usd_market_cap.toLocaleString(
+            undefined,
+            opts
+        )}\nVolume: $${usd_24h_vol.toLocaleString(undefined, opts)}`
+    );
+};
+
 // Start TRPC server
 
 const app = express();
@@ -81,5 +132,7 @@ app.get("/", (req, res) => {
 const port = 3001;
 app.listen(port);
 console.log("Listening on port", port);
+
+cronjob.start();
 
 client.login(process.env.DISCORD_TOKEN);
