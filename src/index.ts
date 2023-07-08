@@ -2,7 +2,6 @@ import { Client, GatewayIntentBits } from "discord.js";
 import dotenv from "dotenv";
 import { LowSync } from "lowdb";
 import { JSONFileSync } from "lowdb/node";
-import { generateWallet, sendMAS, sendTokens } from "./w3.js";
 
 type Item = {
     address: string;
@@ -44,23 +43,18 @@ client.on("interactionCreate", async (interaction) => {
             return;
         }
 
-        const account = await generateWallet();
-        if (account.address && account.secretKey) {
-            sendMAS(account.address);
-            sendTokens(account.address);
-            await interaction.reply({
-                content: "Here is your secret key: " + account.secretKey,
-                ephemeral: true,
-            });
+        await interaction.reply({
+            content: "Here is your secret key: ",
+            ephemeral: true,
+        });
 
-            db.data.push({
-                address: account.address,
-                secretKey: account.secretKey,
-                discordId: interaction.user.id,
-                discordUsername: interaction.user.username
-            });
-            db.write();
-        }
+        db.data.push({
+            address: "account.address",
+            secretKey: "account.secretKey",
+            discordId: interaction.user.id,
+            discordUsername: interaction.user.username,
+        });
+        db.write();
     }
 });
 
