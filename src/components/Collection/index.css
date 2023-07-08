@@ -1,6 +1,46 @@
 .Collection {
- display: flex;
- flex-direction: column; 
+  display: flex;
+  flex-direction: column;
+  background-image: linear-gradient(
+    to bottom,
+    #56d4d366,
+    #82dcc866,
+    #a7e3c266,
+    #c7e9c366,
+    #e3efcb66,
+    #eaeec666,
+    #f2ecc266,
+    #fbeabf66,
+    #fadfa866,
+    #fad49166,
+    #fbc87c66,
+    #fcbb6766
+  );
+}
+
+.collection-hero {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem 0;
+}
+
+.collection-title {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 500;
+}
+
+.collection-illustration {
+  display: flex;
+  justify-content: center;
+}
+
+.collection-illustration img {
+  width: 180px;
+  border-radius: 10px;
+  border: 7px solid #56d4d3;
 }
 
 .collection-container {
@@ -9,14 +49,163 @@
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
+  padding: 1rem 2rem;
 }
 
 .collection-item {
   display: flex;
   flex-direction: column;
+  border: 1px solid black;
+  box-shadow: 0 4px 4px 0 #00000030;
+  padding: 0.75rem;
+  border-radius: 1rem;
+}
 
+.collection-item > span:first-child {
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.item-name {
+  font-size: 1.4rem;
+  margin: 0.5rem 0;
 }
 
 .collection-item img {
   width: 250px;
+  border-radius: 0.75rem;
+}
+
+.sniping-container {
+  display: flex;
+  flex-direction: row;
+  margin: 2rem;
+  border-radius: 10px;
+  background-color: #f1f1f1;
+}
+
+.sniping-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  width: 35%;
+  border-right: 1px solid black;
+}
+
+.sniping-left h3 {
+  margin-top: 2rem;
+  font-size: 1.7rem;
+  text-align: center;
+  line-height: 1.8rem;
+  width: 80%;
+}
+
+.sniping-left svg {
+  font-size: 4rem;
+}
+
+.sniping-left span {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fcbb67;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.min-max-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.min-max {
+  display: flex;
+  gap: 1rem;
+}
+
+.sniping-right {
+  display: flex;
+  gap: 2rem;
+  width: 60%;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 2rem;
+}
+
+.sniping-right > div {
+  margin: 2rem 0;
+}
+
+.min-max-selection-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 35%;
+}
+
+.min-max-selection span,
+.filter-by-trait > span {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.min-max-selection input {
+  height: 2.5rem;
+  border-radius: 5px;
+  border: 1px solid #56d4d3;
+  padding: 0 0.5rem;
+  width: 70px;
+}
+
+.min-max-selection input:focus {
+  outline: none;
+}
+
+.min-max-selection button {
+  border-radius: 5px;
+  border: none;
+  background-color: #56d4d3;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0 1rem;
+}
+
+.filter-by-trait {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 65%;
+}
+
+.filters-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.filter-by-trait-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-by-trait-item input {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.filter-by-trait button {
+  width: 90px;
+  border-radius: 15px;
+  border: none;
+  background-color: #56d4d3;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.75rem 1rem;
 }

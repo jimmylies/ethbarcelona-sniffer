@@ -3,6 +3,8 @@ import { Web3ModalContext } from "../../contexts/Web3ModalProvider";
 import "./index.css";
 import Spinner from "../Spinner";
 import results from "../../assets/docs/results.json";
+import { faBell } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Collection = () => {
   const [nfts, setNfts] = React.useState<any[]>([]);
@@ -72,19 +74,79 @@ const Collection = () => {
         .map((element, index) => ({ element, score: ranksArray[index] }))
         .sort((a, b) => a.score - b.score)
         .map((item) => item.element);
+      console.log(sortedElements);
       setNfts(sortedElements);
     }
   }, [loading]);
+
+  const minMaxSelection = (title: string, min: number, max: number) => {
+    return (
+      <div className="min-max-selection">
+        <span>{title}</span>
+        <div className="min-max">
+          <span>{min}</span>
+          <span>{max}</span>
+        </div>
+      </div>
+    );
+  };
 
   if (loading) return <Spinner />;
 
   return (
     <div className="Collection">
-      <h1>PrimeNumbers collection</h1>
+      <div className="collection-hero">
+        <span className="collection-title">PrimeNumbers collection</span>
+        <div className="collection-illustration">
+          <span></span>
+          <img
+            src="https://ik.imagekit.io/thearmors/thumbnails/prime_YUL7jg_Xx.jpeg?1688845505733"
+            alt="illustration"
+          />
+        </div>
+      </div>
+
+      <div className="sniping-container">
+        <div className="sniping-left">
+          <h3>GET YOUR PERSONALIZED NOTIFICATION</h3>
+          <FontAwesomeIcon icon={faBell} />
+          <span>NFT Sniping</span>
+        </div>
+        <div className="sniping-right">
+          <div className="min-max-selection-container">
+            {[
+              { title: "RANK", minMax: "Min" },
+              { title: "PRICE", minMax: "Max" },
+            ].map((item) => (
+              <div className="min-max-selection">
+                <span>{item.title}</span>
+                <div className="min-max">
+                  <input type="text" placeholder={item.minMax} />
+                  <button onClick={() => console.log("applied")}>Apply</button>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="filter-by-trait">
+            <span>FILTER BY TRAIT</span>
+            <div className="filters-container">
+              {properties.concat(attributesRarity).map((property) => (
+                <div className="filter-by-trait-item">
+                  <input type="checkbox" />
+                  <span>{property}</span>
+                </div>
+              ))}
+            </div>
+            <button>SAVE</button>
+          </div>
+        </div>
+      </div>
+
       <div className="collection-container">
         {nfts.map((nft, index) => (
           <div className="collection-item" key={nft.asset.idAsset + index}>
-            <span>Rank {index + 1}</span>
+            <span>RANK #{index + 1}</span>
+            <span className="item-name">{nft.asset.name}</span>
             <img src={nft.asset.files[0].url} alt={nft.asset.name} />
           </div>
         ))}
