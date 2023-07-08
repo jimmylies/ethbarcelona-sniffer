@@ -9,20 +9,9 @@ import {
     APIEmbed,
 } from "discord.js";
 import dotenv from "dotenv";
-
-// import { LowSync } from "lowdb";
-// import { JSONFileSync } from "lowdb/node";
-
-// type Item = {
-// address: string;
-// secretKey: string;
-// discordId: string;
-//     // discordUsername: string;
-// };
-
-// const defaultData: Item[] = [];
-// const adapter = new JSONFileSync<Item[]>("db.json");
-// const db = new LowSync(adapter, defaultData);
+import express from "express";
+import cors from "cors";
+import { expressMiddleware } from "./trpc";
 
 type NFT = {
     name: string;
@@ -44,12 +33,12 @@ const client = new Client({
 
 client.on("ready", async () => {
     console.log(`Logged in as ${client.user?.tag}!`);
-    sendMsg("941011407158263828", {
-        name: "test",
-        symbol: "TEST",
-        tokenId: 1234,
-        price: 6.67,
-    });
+    // sendMsg("941011407158263828", {
+    //     name: "test",
+    //     symbol: "TEST",
+    //     tokenId: 1234,
+    //     price: 6.67,
+    // });
 });
 
 const sendMsg = async (userId: string, co: NFT) => {
@@ -76,5 +65,21 @@ const sendMsg = async (userId: string, co: NFT) => {
         embeds: [embed],
     });
 };
+
+// Start TRPC server
+
+const app = express();
+app.use(cors());
+app.use("/trpc", expressMiddleware);
+
+// Health check
+app.get("/", (req, res) => {
+    console.log(req.ip);
+    res.send("Hello World!");
+});
+
+const port = 3001;
+app.listen(port);
+console.log("Listening on port", port);
 
 client.login(process.env.DISCORD_TOKEN);
