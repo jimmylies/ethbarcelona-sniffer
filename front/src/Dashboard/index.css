@@ -1,0 +1,11 @@
+.Dashboard {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-dashboard {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  font-weight: 600;
+}
