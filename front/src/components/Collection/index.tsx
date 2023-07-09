@@ -6,6 +6,7 @@ import results from "../../assets/docs/results.json";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { trpc } from "../../utils/trpc";
+import { Link } from "react-router-dom";
 
 const Collection = () => {
     const [nfts, setNfts] = React.useState<any[]>([]);
@@ -48,6 +49,10 @@ const Collection = () => {
 
         setData(totalStat);
         setLoading(false);
+    };
+
+    const save = () => {
+        // mutate({discordId: "", })
     };
 
     useEffect(() => {
@@ -154,14 +159,15 @@ const Collection = () => {
                                     </div>
                                 ))}
                         </div>
-                        <button>SAVE</button>
+                        <button onClick={() => save()}>SAVE</button>
                     </div>
                 </div>
             </div>
 
             <div className="collection-container">
                 {nfts.map((nft, index) => (
-                    <div
+                    <Link
+                        to={nft.asset.idAsset}
                         className="collection-item"
                         key={nft.asset.idAsset + index}
                     >
@@ -171,7 +177,7 @@ const Collection = () => {
                             src={nft.asset.files[0].url}
                             alt={nft.asset.name}
                         />
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>
