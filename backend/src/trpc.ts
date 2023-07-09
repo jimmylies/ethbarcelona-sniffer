@@ -20,6 +20,72 @@ export type Context = inferAsyncReturnType<typeof createContext>;
 export const t = initTRPC.context<Context>().create();
 
 export const appRouter = t.router({
+    subscribeToXDC: t.procedure
+        .input(z.object({ discordId: z.string(), xdcRegistered: z.boolean() }))
+        .mutation(({ input }) => {
+            const { discordId, xdcRegistered } = input;
+            return prisma.user.update({
+                where: {
+                    discordId,
+                },
+                data: {
+                    xdcRegistered,
+                },
+            });
+        }),
+    subscribeToXRC20: t.procedure
+        .input(
+            z.object({
+                discordId: z.string(),
+                xrc20: z.object({
+                    address: z.string(),
+                    symbol: z.string(),
+                }),
+            })
+        )
+        .mutation(({ input }) => {
+            const { discordId, xrc20 } = input;
+            return prisma.user.update({
+                where: {
+                    discordId,
+                },
+                data: {
+                    xrc20Watchlist: {
+                        createMany: {
+                            data: xrc20,
+                        },
+                    },
+                },
+            });
+        }),
+    subscribeToXRC721: t.procedure
+        .input(
+            z.object({
+                discordId: z.string(),
+                xrc721: z.object({
+                    address: z.string(),
+                    symbol: z.string(),
+
+                    price: z.number(),
+                    rank: z.number(),
+                }),
+            })
+        )
+        .mutation(({ input }) => {
+            const { discordId, xrc721 } = input;
+            return prisma.user.update({
+                where: {
+                    discordId,
+                },
+                data: {
+                    xrc721Watchlist: {
+                        createMany: {
+                            data: xrc721,
+                        },
+                    },
+                },
+            });
+        }),
     addToWatchlist: t.procedure
         .input(
             z.object({
@@ -29,6 +95,7 @@ export const appRouter = t.router({
                         address: z.string(),
                         symbol: z.string(),
                         price: z.number(),
+                        rank: z.number(),
                     })
                 ),
                 xrc20Watchlist: z.array(

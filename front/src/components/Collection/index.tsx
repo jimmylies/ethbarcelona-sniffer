@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Web3ModalContext } from "../../contexts/Web3ModalProvider";
 import "./index.css";
 import Spinner from "../Spinner";
@@ -7,11 +7,17 @@ import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { trpc } from "../../utils/trpc";
 import { Link } from "react-router-dom";
+import { DiscordUserContext } from "../../context/discordContext";
 
 const Collection = () => {
     const [nfts, setNfts] = React.useState<any[]>([]);
     const [loading, setLoading] = React.useState<boolean>(true);
     const [data, setData] = React.useState<any[]>([]);
+    const [rankValue, setRankValue] = React.useState<number>(0);
+    const [priceValue, setPriceValue] = React.useState<number>(0);
+
+    const { discordUser } = useContext(DiscordUserContext);
+
     const properties = [
         "backgroundColor",
         "futuristicLines",
@@ -25,7 +31,7 @@ const Collection = () => {
         "addedMultiplier",
     ];
 
-    const { mutate } = trpc.addToWatchlist.useMutation();
+    const { mutate } = trpc.subscribeToXRC721.useMutation();
 
     const getAttributeCount = (category: string, attribute: string) => {
         for (let i = 0; i < data.length; i++) {
@@ -52,7 +58,16 @@ const Collection = () => {
     };
 
     const save = () => {
-        // mutate({discordId: "", })
+        if (discordUser?.id)
+            mutate({
+                discordId: discordUser.id || "",
+                xrc721: {
+                    address: "",
+                    price: priceValue,
+                    rank: rankValue,
+                    symbol: "PMNT",
+                },
+            });
     };
 
     useEffect(() => {
@@ -127,25 +142,29 @@ const Collection = () => {
                 </div>
                 <div className="sniping-right">
                     <div className="min-max-selection-container">
-                        {[
-                            { title: "RANK", minMax: "Min" },
-                            { title: "PRICE", minMax: "Max" },
-                        ].map((item) => (
-                            <div className="min-max-selection">
-                                <span>{item.title}</span>
-                                <div className="min-max">
-                                    <input
-                                        type="text"
-                                        placeholder={item.minMax}
-                                    />
-                                    <button
-                                        onClick={() => console.log("applied")}
-                                    >
-                                        Apply
-                                    </button>
-                                </div>
+                        <div className="min-max-selection">
+                            <div className="min-max">
+                                <span>RANK</span>
+                                <input
+                                    type="text"
+                                    onChange={(e) =>
+                                        setRankValue(parseInt(e.target.value))
+                                    }
+                                />
                             </div>
-                        ))}
+                            <div className="min-max">
+                                <span>PRICE</span>
+                                <input
+                                    type="text"
+                                    onChange={(e) =>
+                                        setPriceValue(parseInt(e.target.value))
+                                    }
+                                />
+                            </div>
+                            <button onClick={() => console.log("applied")}>
+                                Apply
+                            </button>
+                        </div>
                     </div>
                     <div className="filter-by-trait">
                         <span>FILTER BY TRAIT</span>
