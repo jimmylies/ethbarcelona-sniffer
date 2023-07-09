@@ -50,27 +50,32 @@ const Dashboard = () => {
         )}
       </div>
       <div className="sniping">
-        <span>NFT Sniping</span>
+        <span>Token Alert</span>
         <div className="personal-notifications">
           <span className="collection-name">
             Collection&apos;s name: PrimeNumbers
           </span>
-
-          {[
-            { rank: "15", price: NaN },
-            { rank: "20", price: 200 },
-            { rank: "5", price: 1000 },
-          ].map((alert, index) => {
-            return (
-              <div className="alert" key={index}>
-                <span>Alert #{index + 1}</span>
-                <span>Rank: {alert.rank}</span>
-                <span>
-                  Price: {!isNaN(alert.price) ? alert.price : "not defined"}
-                </span>
-              </div>
-            );
-          })}
+          <h4>
+            The alerts send you a notification on discord and telegram the
+            inform you when an NFT above a certain rank and under a certain
+            price has been listed
+          </h4>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+              marginLeft: "1rem",
+              marginTop: "1rem",
+            }}
+          >
+            <span>Subscribe to XDC Alert</span>
+            <input type="checkbox" />
+            <span>Subscribe to PMNT Alert</span>
+            <input type="checkbox" />
+            <span>Subscribe to XST Alert</span>
+            <input type="checkbox" />
+          </div>
         </div>
       </div>
       <div className="personal-notifications">
