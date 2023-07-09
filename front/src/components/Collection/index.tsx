@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Web3ModalContext } from "../../contexts/Web3ModalProvider";
 import "./index.css";
 import Spinner from "../Spinner";
@@ -7,11 +7,17 @@ import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { trpc } from "../../utils/trpc";
 import { Link } from "react-router-dom";
+import { DiscordUserContext } from "../../context/discordContext";
 
 const Collection = () => {
   const [nfts, setNfts] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [data, setData] = React.useState<any[]>([]);
+  const [rankValue, setRankValue] = React.useState<number>(0);
+  const [priceValue, setPriceValue] = React.useState<number>(0);
+
+  const { discordUser } = useContext(DiscordUserContext);
+
   const properties = [
     "backgroundColor",
     "futuristicLines",
@@ -25,7 +31,7 @@ const Collection = () => {
     "addedMultiplier",
   ];
 
-  const { mutate } = trpc.addToWatchlist.useMutation();
+  const { mutate } = trpc.subscribeToXRC721.useMutation();
 
   const getAttributeCount = (category: string, attribute: string) => {
     for (let i = 0; i < data.length; i++) {
@@ -52,7 +58,16 @@ const Collection = () => {
   };
 
   const save = () => {
-    // mutate({discordId: "", })
+    if (discordUser?.id)
+      mutate({
+        discordId: discordUser.id || "",
+        xrc721: {
+          address: "",
+          price: priceValue,
+          rank: rankValue,
+          symbol: "PMNT",
+        },
+      });
   };
 
   useEffect(() => {
@@ -97,6 +112,77 @@ const Collection = () => {
         <div className="min-max">
           <span>{min}</span>
           <span>{max}</span>
+          <div className="Collection">
+            <div className="collection-hero">
+              <span className="collection-title">PrimeNumbers collection</span>
+              <div className="collection-illustration">
+                <span></span>
+                <img
+                  src="https://ik.imagekit.io/thearmors/thumbnails/prime_YUL7jg_Xx.jpeg?1688845505733"
+                  alt="illustration"
+                />
+              </div>
+            </div>
+
+            <div className="sniping-container">
+              <div className="sniping-left">
+                <h3>GET YOUR PERSONALIZED NOTIFICATION</h3>
+                <FontAwesomeIcon icon={faBell} />
+                <span>NFT Sniping</span>
+              </div>
+              <div className="sniping-right">
+                <div className="min-max-selection-container">
+                  <div className="min-max-selection">
+                    <div className="min-max">
+                      <span>RANK</span>
+                      <input
+                        type="text"
+                        onChange={(e) => setRankValue(parseInt(e.target.value))}
+                      />
+                    </div>
+                    <div className="min-max">
+                      <span>PRICE</span>
+                      <input
+                        type="text"
+                        onChange={(e) =>
+                          setPriceValue(parseInt(e.target.value))
+                        }
+                      />
+                    </div>
+                    <button onClick={() => console.log("applied")}>
+                      Apply
+                    </button>
+                  </div>
+                </div>
+                <div className="filter-by-trait">
+                  <span>FILTER BY TRAIT</span>
+                  <div className="filters-container">
+                    {properties.concat(attributesRarity).map((property) => (
+                      <div className="filter-by-trait-item">
+                        <input type="checkbox" />
+                        <span>{property}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <button onClick={() => save()}>SAVE</button>
+                </div>
+              </div>
+            </div>
+
+            <div className="collection-container">
+              {nfts.map((nft, index) => (
+                <Link
+                  to={nft.asset.idAsset}
+                  className="collection-item"
+                  key={nft.asset.idAsset + index}
+                >
+                  <span>RANK #{index + 1}</span>
+                  <span className="item-name">{nft.asset.name}</span>
+                  <img src={nft.asset.files[0].url} alt={nft.asset.name} />
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     );

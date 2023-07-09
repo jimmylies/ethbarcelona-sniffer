@@ -26,5 +26,7 @@ model XRC721Wish {
   address       String @id
   symbol        String
   userDiscordId String
+  price         Int
+  rank          Int
   User          User   @relation(fields: [userDiscordId], references: [discordId])
 }

@@ -3,16 +3,23 @@ import "./index.css";
 import { DiscordUserContext } from "../../context/discordContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
+import { trpc } from "../../utils/trpc";
 
 const Dashboard = () => {
   const [isConnected, setIsConnected] = useState(false);
   const { discordUser, setDiscordUser } = useContext(DiscordUserContext);
+
+  const { data } = trpc.getWatchlist.useQuery(discordUser?.id || "", {
+    enabled: !!discordUser,
+  });
+  console.log(data);
 
   useEffect(() => {
     if (discordUser) {
       setIsConnected(true);
       return;
     }
+
     const fragment = new URLSearchParams(window.location.hash.slice(1));
     const accessToken = fragment.get("access_token");
     const tokenType = fragment.get("token_type");
@@ -26,8 +33,7 @@ const Dashboard = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.username);
-        setDiscordUser(data.username);
+        setDiscordUser({ username: data.username, id: data.id });
       });
   }, [window.location.hash]);
 
@@ -36,36 +42,34 @@ const Dashboard = () => {
       <div className="header-dashboard">
         <h2>My profile</h2>
         {isConnected ? (
-          <span>DISCORD ID: {discordUser}</span>
+          <span>Logged in as {discordUser?.username}</span>
         ) : (
           <a href="https://discord.com/api/oauth2/authorize?client_id=1127156751255478385&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fdiscord&response_type=token&scope=identify">
             Sign in with Discord <FontAwesomeIcon icon={faDiscord} />
           </a>
         )}
       </div>
-      <div className="sniping">
-        <span>NFT Sniping</span>
-        <div className="personal-notifications">
-          <span className="collection-name">
-            Collection&apos;s name: PrimeNumbers
-          </span>
+      <span>NFT Sniping</span>
+      <div className="personal-notifications">
+        <span className="collection-name">
+          Collection&apos;s name: PrimeNumbers
+        </span>
 
-          {[
-            { rank: "15", price: NaN },
-            { rank: "20", price: 200 },
-            { rank: "5", price: 1000 },
-          ].map((alert, index) => {
-            return (
-              <div className="alert" key={index}>
-                <span>Alert #{index + 1}</span>
-                <span>Rank: {alert.rank}</span>
-                <span>
-                  Price: {!isNaN(alert.price) ? alert.price : "not defined"}
-                </span>
-              </div>
-            );
-          })}
-        </div>
+        {[
+          { rank: "15", price: NaN },
+          { rank: "20", price: 200 },
+          { rank: "5", price: 1000 },
+        ].map((alert, index) => {
+          return (
+            <div className="alert" key={index}>
+              <span>Alert #{index + 1}</span>
+              <span>Rank: {alert.rank}</span>
+              <span>
+                Price: {!isNaN(alert.price) ? alert.price : "not defined"}
+              </span>
+            </div>
+          );
+        })}
       </div>
       <div className="personal-notifications">
         <span className="collection-name">History NFT Sniping</span>
@@ -81,35 +85,31 @@ const Dashboard = () => {
             {[
               {
                 collection: "PrimeNumbers",
-                nft: "PrimeNumbers #26849",
-                rank: "3",
-                price: "14.500 XDC",
+                nft: "PrimeNumbers #2456",
+                rank: "11",
+                price: "14.500",
                 date: "10min ago",
-                url: "https://ik.imagekit.io/primenumbers/marketplace/50/0xf87f7dd4e47dd5bcac902c381ea0d2730db5c6ad/1.jpg",
               },
               {
                 collection: "PrimeNumbers",
-                nft: "PrimeNumbers #2897",
+                nft: "PrimeNumbers #26450",
                 rank: "10",
-                price: "14.500 XDC",
+                price: "14.500",
                 date: "1h ago",
-                url: "https://ik.imagekit.io/primenumbers/marketplace/50/0xf87f7dd4e47dd5bcac902c381ea0d2730db5c6ad/2.png",
               },
               {
                 collection: "PrimeNumbers",
-                nft: "PrimeNumbers #17573",
+                nft: "PrimeNumbers #8325",
                 rank: "15",
-                price: "14.500 XDC",
+                price: "14.500",
                 date: "1h ago",
-                url: "https://ik.imagekit.io/primenumbers/marketplace/50/0xf87f7dd4e47dd5bcac902c381ea0d2730db5c6ad/5.jpg",
               },
               {
                 collection: "PrimeNumbers",
-                nft: "PrimeNumbers #2777",
+                nft: "PrimeNumbers #24781",
                 rank: "8",
-                price: "14.500 XDC",
+                price: "14.500",
                 date: "2h ago",
-                url: "https://ik.imagekit.io/primenumbers/marketplace/50/0xf87f7dd4e47dd5bcac902c381ea0d2730db5c6ad/6.jpg",
               },
             ].map((row, index) => {
               return (
@@ -117,7 +117,7 @@ const Dashboard = () => {
                   <div>{row.collection}</div>
                   <div>
                     {row.nft}
-                    <img src={row.url} />
+                    <img src={""} />
                   </div>
                   <div>{row.rank}</div>
                   <div>{row.price}</div>
@@ -130,7 +130,7 @@ const Dashboard = () => {
       </div>
       <div className="personal-notifications">
         <span className="collection-name">History Alerts</span>
-        <div className="table-XDC">
+        <div className="table-XRC">
           <div className="header-table">
             {["TOKEN TYPE", "TOKEN", "PRICE", "DATE"].map((header, index) => {
               return <div key={index}>{header}</div>;
@@ -140,26 +140,26 @@ const Dashboard = () => {
             {[
               {
                 type: "XRC20",
-                token: "XDC",
+                token: "XRC",
                 price: "$0.040",
                 date: "2min ago",
               },
               {
                 type: "XRC20",
-                token: "XDC",
+                token: "XRC",
                 price: "$0.045",
                 date: "12min ago",
               },
               {
                 type: "XRC20",
-                token: "XDC",
+                token: "XRC",
                 price: "$0.041",
                 date: "18min ago",
               },
               {
                 type: "XRC721",
-                token: "PrimeNumbers #26849",
-                price: "17.000 XDC",
+                token: "PrimeNumbers #2456",
+                price: "17.000 XRC",
                 date: "20min ago",
               },
             ].map((row, index) => {
@@ -168,9 +168,7 @@ const Dashboard = () => {
                   <div>{row.type}</div>
                   <div>
                     {row.token}
-                    {row.type === "XRC721" && (
-                      <img src="https://ik.imagekit.io/primenumbers/marketplace/50/0xf87f7dd4e47dd5bcac902c381ea0d2730db5c6ad/1.jpg" />
-                    )}
+                    <img src={""} />
                   </div>
                   <div>{row.price}</div>
                   <div>{row.date}</div>

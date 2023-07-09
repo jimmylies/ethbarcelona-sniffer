@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import "./app.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
-import { DiscordUserContext } from "./context/discordContext";
+import {
+  DiscordUser,
+  DiscordUserContext,
+  DiscordUserContextType,
+} from "./context/discordContext";
 import Header from "./components/Header";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
@@ -15,7 +19,7 @@ import Home from "./pages/Home";
 import Collection from "./components/Collection";
 
 const App: React.FC = () => {
-  const [discordUser, setDiscordUser] = useState("");
+  const [discordUser, setDiscordUser] = useState<DiscordUser>();
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -34,13 +38,19 @@ const App: React.FC = () => {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <DiscordUserContext.Provider value={{ discordUser, setDiscordUser }}>
+        <DiscordUserContext.Provider
+          value={
+            {
+              discordUser,
+              setDiscordUser,
+            } as DiscordUserContextType
+          }
+        >
           <Web3ModalProvider>
             <BrowserRouter>
               <Header />
               <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/collection" element={<Collection />} />
+                <Route path="/" element={<Collection />} />
                 <Route path="/auth/discord" element={<Dashboard />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/:tokenId" element={<NFT />} />
