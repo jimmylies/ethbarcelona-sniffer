@@ -69,8 +69,9 @@ export const appRouter = t.router({
                 },
             });
         }),
-    getWatchlist: t.procedure.input(z.string()).query(({ input }) =>
-        prisma.user.findUnique({
+    getWatchlist: t.procedure.input(z.string()).query(({ input }) => {
+        console.log(input);
+        return prisma.user.findUnique({
             where: {
                 discordId: input,
             },
@@ -78,8 +79,8 @@ export const appRouter = t.router({
                 xrc721Watchlist: true,
                 xrc20Watchlist: true,
             },
-        })
-    ),
+        });
+    }),
 });
 
 export const expressMiddleware = trpcExpress.createExpressMiddleware({

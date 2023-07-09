@@ -3,7 +3,11 @@ import "./app.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import Collection from "./components/Collection";
-import { DiscordUserContext } from "./context/discordContext";
+import {
+    DiscordUser,
+    DiscordUserContext,
+    DiscordUserContextType,
+} from "./context/discordContext";
 import Header from "./components/Header";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./Dashboard";
@@ -14,7 +18,7 @@ import Footer from "./components/Footer";
 import NFT from "./NFT";
 
 const App: React.FC = () => {
-    const [discordUser, setDiscordUser] = useState("");
+    const [discordUser, setDiscordUser] = useState<DiscordUser>();
     const queryClient = new QueryClient({
         defaultOptions: {
             queries: {
@@ -34,7 +38,12 @@ const App: React.FC = () => {
         <trpc.Provider client={trpcClient} queryClient={queryClient}>
             <QueryClientProvider client={queryClient}>
                 <DiscordUserContext.Provider
-                    value={{ discordUser, setDiscordUser }}
+                    value={
+                        {
+                            discordUser,
+                            setDiscordUser,
+                        } as DiscordUserContextType
+                    }
                 >
                     <Web3ModalProvider>
                         <BrowserRouter>
