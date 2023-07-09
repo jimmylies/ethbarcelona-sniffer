@@ -2,12 +2,13 @@
   display: flex;
   flex-direction: column;
   padding: 3rem 0;
+  gap: 4rem;
 }
 
 .header-dashboard {
   display: flex;
-  justify-content: space-between;
-  padding: 1rem 2rem;
+  flex-direction: column;
+  padding: 1rem;
   font-weight: 600;
 }
 
@@ -23,8 +24,14 @@
   font-weight: 400;
 }
 
-.Dashboard > span {
-  padding: 1rem;
+.sniping {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sniping > span {
+  margin: 0 1rem;
   font-size: 1.8rem;
   font-weight: 700;
   color: #fcbb67;
@@ -49,7 +56,7 @@
 }
 
 .table,
-.table-XRC {
+.table-XDC {
   display: flex;
   flex-direction: column;
   border: 1px solid #fcbb67;
@@ -82,10 +89,17 @@
 .row div {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 }
 
-.table-XRC .header-table,
-.table-XRC .row {
+.row img {
+  width: 80px;
+  height: 80px;
+  border-radius: 0.5rem;
+}
+
+.table-XDC .header-table,
+.table-XDC .row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }

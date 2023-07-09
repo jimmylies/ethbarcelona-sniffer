@@ -112,6 +112,96 @@ const Collection = () => {
                 <div className="min-max">
                     <span>{min}</span>
                     <span>{max}</span>
+                    <div className="Collection">
+                        <div className="collection-hero">
+                            <span className="collection-title">
+                                PrimeNumbers collection
+                            </span>
+                            <div className="collection-illustration">
+                                <span></span>
+                                <img
+                                    src="https://ik.imagekit.io/thearmors/thumbnails/prime_YUL7jg_Xx.jpeg?1688845505733"
+                                    alt="illustration"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="sniping-container">
+                            <div className="sniping-left">
+                                <h3>GET YOUR PERSONALIZED NOTIFICATION</h3>
+                                <FontAwesomeIcon icon={faBell} />
+                                <span>NFT Sniping</span>
+                            </div>
+                            <div className="sniping-right">
+                                <div className="min-max-selection-container">
+                                    <div className="min-max-selection">
+                                        <div className="min-max">
+                                            <span>RANK</span>
+                                            <input
+                                                type="text"
+                                                onChange={(e) =>
+                                                    setRankValue(
+                                                        parseInt(e.target.value)
+                                                    )
+                                                }
+                                            />
+                                        </div>
+                                        <div className="min-max">
+                                            <span>PRICE</span>
+                                            <input
+                                                type="text"
+                                                onChange={(e) =>
+                                                    setPriceValue(
+                                                        parseInt(e.target.value)
+                                                    )
+                                                }
+                                            />
+                                        </div>
+                                        <button
+                                            onClick={() =>
+                                                console.log("applied")
+                                            }
+                                        >
+                                            Apply
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className="filter-by-trait">
+                                    <span>FILTER BY TRAIT</span>
+                                    <div className="filters-container">
+                                        {properties
+                                            .concat(attributesRarity)
+                                            .map((property) => (
+                                                <div className="filter-by-trait-item">
+                                                    <input type="checkbox" />
+                                                    <span>{property}</span>
+                                                </div>
+                                            ))}
+                                    </div>
+                                    <button onClick={() => save()}>SAVE</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="collection-container">
+                            {nfts.map((nft, index) => (
+                                <Link
+                                    to={nft.asset.idAsset}
+                                    className="collection-item"
+                                    key={nft.asset.idAsset + index}
+                                >
+                                    <span>RANK #{index + 1}</span>
+                                    <span className="item-name">
+                                        {nft.asset.name}
+                                    </span>
+                                    <img
+                                        src={nft.asset.files[0].url}
+                                        alt={nft.asset.name}
+                                    />
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
         );
@@ -126,7 +216,6 @@ const Collection = () => {
                     PrimeNumbers collection
                 </span>
                 <div className="collection-illustration">
-                    <span></span>
                     <img
                         src="https://ik.imagekit.io/thearmors/thumbnails/prime_YUL7jg_Xx.jpeg?1688845505733"
                         alt="illustration"
@@ -142,26 +231,25 @@ const Collection = () => {
                 </div>
                 <div className="sniping-right">
                     <div className="min-max-selection-container">
-                        <div className="min-max-selection">
-                            <div className="min-max">
-                                <span>RANK</span>
-                                <input
-                                    type="text"
-                                    onChange={(e) =>
-                                        setRankValue(parseInt(e.target.value))
-                                    }
-                                />
+                        {[
+                            { title: "RANK", minMax: "Min" },
+                            { title: "PRICE", minMax: "Max" },
+                        ].map((item) => (
+                            <div className="min-max-selection">
+                                <span>{item.title}</span>
+                                <div className="min-max">
+                                    <input
+                                        type="text"
+                                        placeholder={item.minMax}
+                                    />
+                                    <button
+                                        onClick={() => console.log("applied")}
+                                    >
+                                        Apply
+                                    </button>
+                                </div>
                             </div>
-                            <div className="min-max">
-                                <span>PRICE</span>
-                                <input
-                                    type="text"
-                                    onChange={(e) =>
-                                        setPriceValue(parseInt(e.target.value))
-                                    }
-                                />
-                            </div>
-                        </div>
+                        ))}
                     </div>
                     <div className="filter-by-trait">
                         <span>FILTER BY TRAIT</span>
