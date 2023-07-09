@@ -23,11 +23,9 @@ const Header = () => {
 
   return (
     <div className="Header">
-      <nav>
-        <Link to="/">
-          <img className="logo" src={logo_transparent} alt="logo" />
-        </Link>
-      </nav>
+      <Link to="/">
+        <img className="logo" src={logo_transparent} alt="logo" />
+      </Link>
       <div className="connection-container">
         <Link to={"/dashboard"}>
           <FontAwesomeIcon icon={faUser} className="user-profile-svg" />
