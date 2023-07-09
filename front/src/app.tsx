@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import "./app.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import Collection from "./components/Collection";
+import { DiscordUserContext } from "./context/discordContext";
+import Header from "./components/Header";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Dashboard from "./Dashboard";
+import Web3ModalProvider from "./contexts/Web3ModalProvider";
 import { api } from "./utils/config";
 import { trpc } from "./utils/trpc";
+import Footer from "./components/Footer";
+import NFT from "./NFT";
 
 const App: React.FC = () => {
+    const [discordUser, setDiscordUser] = useState("");
     const queryClient = new QueryClient({
         defaultOptions: {
             queries: {
@@ -25,11 +33,28 @@ const App: React.FC = () => {
     return (
         <trpc.Provider client={trpcClient} queryClient={queryClient}>
             <QueryClientProvider client={queryClient}>
-                <main>
-                    <div className="app">
-                        <Collection />
-                    </div>
-                </main>
+                <DiscordUserContext.Provider
+                    value={{ discordUser, setDiscordUser }}
+                >
+                    <Web3ModalProvider>
+                        <BrowserRouter>
+                            <Header />
+                            <Routes>
+                                <Route path="/" element={<Collection />} />
+                                <Route
+                                    path="/auth/discord"
+                                    element={<Dashboard />}
+                                />
+                                <Route
+                                    path="/dashboard"
+                                    element={<Dashboard />}
+                                />
+                                <Route path="/:tokenId" element={<NFT />} />
+                            </Routes>
+                        </BrowserRouter>
+                        <Footer />
+                    </Web3ModalProvider>
+                </DiscordUserContext.Provider>
             </QueryClientProvider>
         </trpc.Provider>
     );

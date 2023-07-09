@@ -1,8 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { Web3ModalContext } from "../../contexts/Web3ModalProvider";
 import "./index.css";
 import { Link } from "react-router-dom";
 import logo_transparent from "../../assets/img/logo_transparent.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 const Header = () => {
   const { account, connect, disconnect } = React.useContext(Web3ModalContext);
@@ -18,6 +20,7 @@ const Header = () => {
   function ellipseAddress(address: string = "", width: number = 4): string {
     return `xdc${address.slice(2, width + 2)}...${address.slice(-width)}`;
   }
+
   return (
     <div className="Header">
       <nav>
@@ -26,11 +29,9 @@ const Header = () => {
         </Link>
       </nav>
       <div className="connection-container">
-        <a href="https://discord.com/api/oauth2/authorize?client_id=1127156751255478385&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fdiscord&response_type=token&scope=identify">
-          <button>
-            <span>Sign in with Discord</span>
-          </button>
-        </a>
+        <Link to={"/dashboard"}>
+          <FontAwesomeIcon icon={faUser} className="user-profile-svg" />
+        </Link>
         {!account ? (
           <div className="connect" onClick={handleConnectWallet}>
             Connect wallet

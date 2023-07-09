@@ -1,6 +1,6 @@
 .Spinner {
   display: grid;
   place-items: center;
-  height: 100%;
   width: 100%;
+  min-height: calc(100vh - 152px);
 }
