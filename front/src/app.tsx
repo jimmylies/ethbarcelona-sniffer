@@ -50,7 +50,8 @@ const App: React.FC = () => {
             <BrowserRouter>
               <Header />
               <Routes>
-                <Route path="/" element={<Collection />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/collection" element={<Collection />} />
                 <Route path="/auth/discord" element={<Dashboard />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/:tokenId" element={<NFT />} />
