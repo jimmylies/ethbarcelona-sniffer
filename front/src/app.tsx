@@ -10,6 +10,7 @@ import Dashboard from "./Dashboard";
 import Web3ModalProvider from "./contexts/Web3ModalProvider";
 import { api } from "./utils/config";
 import { trpc } from "./utils/trpc";
+import Footer from "./components/Footer";
 
 const App: React.FC = () => {
   const [discordUser, setDiscordUser] = useState("");
@@ -41,6 +42,7 @@ const App: React.FC = () => {
                 <Route path="/dashboard" element={<Dashboard />} />
               </Routes>
             </BrowserRouter>
+            <Footer />
           </Web3ModalProvider>
         </DiscordUserContext.Provider>
       </QueryClientProvider>

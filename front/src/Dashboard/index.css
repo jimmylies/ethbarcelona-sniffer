@@ -1,11 +1,91 @@
 .Dashboard {
   display: flex;
   flex-direction: column;
+  padding: 3rem 0;
 }
 
 .header-dashboard {
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
+  padding: 1rem 2rem;
   font-weight: 600;
+}
+
+.header-dashboard h2 {
+  font-size: 1.8rem;
+}
+
+.header-dashboard a {
+  padding: 0.5rem 1rem;
+  background-color: #7289da;
+  color: white;
+  border-radius: 5px;
+  font-weight: 400;
+}
+
+.Dashboard > span {
+  padding: 1rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fcbb67;
+}
+
+.personal-notifications > span {
+  padding: 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.alert {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1rem 2rem;
+}
+
+.alert-content {
+  display: flex;
+  gap: 2rem;
+}
+
+.table,
+.table-XRC {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #fcbb67;
+  margin: 1rem;
+}
+
+.table .header-table,
+.table .row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.header-table div,
+.row div {
+  border: 1px solid #fcbb67;
+  border-collapse: collapse;
+  padding: 0.2rem 0.5rem;
+}
+
+.header-table {
+  background-color: #fbd5a3;
+  font-weight: 700;
+}
+
+.content-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.row div {
+  display: flex;
+  align-items: center;
+}
+
+.table-XRC .header-table,
+.table-XRC .row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
 }
