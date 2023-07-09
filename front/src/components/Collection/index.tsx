@@ -161,9 +161,6 @@ const Collection = () => {
                                     }
                                 />
                             </div>
-                            <button onClick={() => console.log("applied")}>
-                                Apply
-                            </button>
                         </div>
                     </div>
                     <div className="filter-by-trait">
