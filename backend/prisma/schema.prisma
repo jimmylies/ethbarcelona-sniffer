@@ -1,32 +1,30 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider     = "mysql"
-    url          = env("DATABASE_URL")
-    relationMode = "prisma"
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model User {
-    discordId       String       @id
-    xdcRegistered   Boolean      @default(false)
-    xrc20Watchlist  XRC20Wish[]
-    xrc721Watchlist XRC721Wish[]
+  discordId       String       @id
+  xdcRegistered   Boolean      @default(false)
+  xrc20Watchlist  XRC20Wish[]
+  xrc721Watchlist XRC721Wish[]
 }
 
 model XRC20Wish {
-    address String @id
-    symbol  String
-
-    User          User   @relation(fields: [userDiscordId], references: [discordId])
-    userDiscordId String
+  address       String @id
+  symbol        String
+  userDiscordId String
+  User          User   @relation(fields: [userDiscordId], references: [discordId])
 }
 
 model XRC721Wish {
-    address String @id
-    symbol  String
-
-    User          User   @relation(fields: [userDiscordId], references: [discordId])
-    userDiscordId String
+  address       String @id
+  symbol        String
+  userDiscordId String
+  User          User   @relation(fields: [userDiscordId], references: [discordId])
 }
