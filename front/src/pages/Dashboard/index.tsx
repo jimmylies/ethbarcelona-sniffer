@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./index.css";
-import { DiscordUserContext } from "../context/discordContext";
+import { DiscordUserContext } from "../../context/discordContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 
@@ -43,27 +43,29 @@ const Dashboard = () => {
           </a>
         )}
       </div>
-      <span>NFT Sniping</span>
-      <div className="personal-notifications">
-        <span className="collection-name">
-          Collection&apos;s name: PrimeNumbers
-        </span>
+      <div className="sniping">
+        <span>NFT Sniping</span>
+        <div className="personal-notifications">
+          <span className="collection-name">
+            Collection&apos;s name: PrimeNumbers
+          </span>
 
-        {[
-          { rank: "15", price: NaN },
-          { rank: "20", price: 200 },
-          { rank: "5", price: 1000 },
-        ].map((alert, index) => {
-          return (
-            <div className="alert" key={index}>
-              <span>Alert #{index + 1}</span>
-              <span>Rank: {alert.rank}</span>
-              <span>
-                Price: {!isNaN(alert.price) ? alert.price : "not defined"}
-              </span>
-            </div>
-          );
-        })}
+          {[
+            { rank: "15", price: NaN },
+            { rank: "20", price: 200 },
+            { rank: "5", price: 1000 },
+          ].map((alert, index) => {
+            return (
+              <div className="alert" key={index}>
+                <span>Alert #{index + 1}</span>
+                <span>Rank: {alert.rank}</span>
+                <span>
+                  Price: {!isNaN(alert.price) ? alert.price : "not defined"}
+                </span>
+              </div>
+            );
+          })}
+        </div>
       </div>
       <div className="personal-notifications">
         <span className="collection-name">History NFT Sniping</span>
@@ -79,31 +81,35 @@ const Dashboard = () => {
             {[
               {
                 collection: "PrimeNumbers",
-                nft: "PrimeNumbers #2456",
-                rank: "11",
-                price: "14.500",
+                nft: "PrimeNumbers #26849",
+                rank: "3",
+                price: "14.500 XDC",
                 date: "10min ago",
+                url: "https://ik.imagekit.io/primenumbers/marketplace/50/0xf87f7dd4e47dd5bcac902c381ea0d2730db5c6ad/1.jpg",
               },
               {
                 collection: "PrimeNumbers",
-                nft: "PrimeNumbers #26450",
+                nft: "PrimeNumbers #2897",
                 rank: "10",
-                price: "14.500",
+                price: "14.500 XDC",
                 date: "1h ago",
+                url: "https://ik.imagekit.io/primenumbers/marketplace/50/0xf87f7dd4e47dd5bcac902c381ea0d2730db5c6ad/2.png",
               },
               {
                 collection: "PrimeNumbers",
-                nft: "PrimeNumbers #8325",
+                nft: "PrimeNumbers #17573",
                 rank: "15",
-                price: "14.500",
+                price: "14.500 XDC",
                 date: "1h ago",
+                url: "https://ik.imagekit.io/primenumbers/marketplace/50/0xf87f7dd4e47dd5bcac902c381ea0d2730db5c6ad/5.jpg",
               },
               {
                 collection: "PrimeNumbers",
-                nft: "PrimeNumbers #24781",
+                nft: "PrimeNumbers #2777",
                 rank: "8",
-                price: "14.500",
+                price: "14.500 XDC",
                 date: "2h ago",
+                url: "https://ik.imagekit.io/primenumbers/marketplace/50/0xf87f7dd4e47dd5bcac902c381ea0d2730db5c6ad/6.jpg",
               },
             ].map((row, index) => {
               return (
@@ -111,7 +117,7 @@ const Dashboard = () => {
                   <div>{row.collection}</div>
                   <div>
                     {row.nft}
-                    <img src={""} />
+                    <img src={row.url} />
                   </div>
                   <div>{row.rank}</div>
                   <div>{row.price}</div>
@@ -124,7 +130,7 @@ const Dashboard = () => {
       </div>
       <div className="personal-notifications">
         <span className="collection-name">History Alerts</span>
-        <div className="table-XRC">
+        <div className="table-XDC">
           <div className="header-table">
             {["TOKEN TYPE", "TOKEN", "PRICE", "DATE"].map((header, index) => {
               return <div key={index}>{header}</div>;
@@ -134,26 +140,26 @@ const Dashboard = () => {
             {[
               {
                 type: "XRC20",
-                token: "XRC",
+                token: "XDC",
                 price: "$0.040",
                 date: "2min ago",
               },
               {
                 type: "XRC20",
-                token: "XRC",
+                token: "XDC",
                 price: "$0.045",
                 date: "12min ago",
               },
               {
                 type: "XRC20",
-                token: "XRC",
+                token: "XDC",
                 price: "$0.041",
                 date: "18min ago",
               },
               {
                 type: "XRC721",
-                token: "PrimeNumbers #2456",
-                price: "17.000 XRC",
+                token: "PrimeNumbers #26849",
+                price: "17.000 XDC",
                 date: "20min ago",
               },
             ].map((row, index) => {
@@ -162,7 +168,9 @@ const Dashboard = () => {
                   <div>{row.type}</div>
                   <div>
                     {row.token}
-                    <img src={""} />
+                    {row.type === "XRC721" && (
+                      <img src="https://ik.imagekit.io/primenumbers/marketplace/50/0xf87f7dd4e47dd5bcac902c381ea0d2730db5c6ad/1.jpg" />
+                    )}
                   </div>
                   <div>{row.price}</div>
                   <div>{row.date}</div>
