@@ -68,9 +68,10 @@ const sendNotifications = async () => {
     }
 };
 
-const every30Sec = "*/30 * * * * *";
+// schedule every hour
+const timeInterval = "* 0 * * * *";
 
-export const cronjob = cron.schedule(every30Sec, sendNotifications, {
+export const cronjob = cron.schedule(timeInterval, sendNotifications, {
     scheduled: false,
 });
 
